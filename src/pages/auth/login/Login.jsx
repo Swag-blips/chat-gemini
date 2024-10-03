@@ -5,7 +5,11 @@ import "./Login.css";
 const Login = () => {
   return (
     <div className="loginPage">
-      <SignIn path="/sign-in" signUpUrl="/sign-up" />
+      <SignIn
+        path="/sign-in"
+        signUpUrl="/sign-up"
+        forceRedirectUrl="/dashboard"
+      />
     </div>
   );
 };
