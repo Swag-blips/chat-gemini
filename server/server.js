@@ -1,12 +1,33 @@
 import express from "express";
+import ImageKit from "imagekit";
+import cors from "cors";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const PORT = process.env.PORT || 8000;
 
 const app = express();
 
-app.use("/test", (req, res) => {
-  res.send("It works!!");
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
+const imagekit = new ImageKit({
+  urlEndpoint: process.env.IMAGE_KIT_ENDPOINT,
+  publicKey: process.env.IMAGE_KIT_PUBLIC_KEY,
+  privateKey: process.env.IMAGE_KIT_PRIVATE_KEY,
+});
+
+app.use("/api/upload", async (req, res) => {
+  try {
+    const result = imagekit.getAuthenticationParameters();
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+  }
 });
 app.listen(PORT, () => {
-  console.log("server running");
+  console.log("server running on port", PORT);
 });
