@@ -25,7 +25,7 @@ const imagekit = new ImageKit({
   privateKey: process.env.IMAGE_KIT_PRIVATE_KEY,
 });
 app.use(express.json());
-app.use("/api/chat", chatRoutes);
+app.use("/api/chats", chatRoutes);
 app.use("/api/userchats", userChatRoutes);
 
 app.use("/api/upload", async (req, res) => {

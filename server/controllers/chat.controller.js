@@ -48,3 +48,17 @@ export const createChat = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+export const getChat = async (req, res) => {
+  const userId = req.auth.userId;
+  const _id = req.params.id;
+
+
+  try {
+    const chat = await Chat.findOne({ _id, userId });
+    res.status(200).json(chat);
+  } catch (error) {
+    console.error(`an error occured ${error.message}`);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};

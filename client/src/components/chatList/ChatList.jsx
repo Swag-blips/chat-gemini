@@ -1,8 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./ChatList.css";
+import { useQuery } from "@tanstack/react-query";
 
 const ChatList = () => {
+  const { isPending, error, data } = useQuery({
+    queryKey: ["chatList"],
+    queryFn: async () => {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/userchats`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.error);
+
+      return data;
+    },
+  });
   return (
     <div className="chatList">
       <span className="title">DASHBOARD</span>
@@ -12,16 +31,15 @@ const ChatList = () => {
       <hr />
       <span className="title">RECENT CHATS</span>
       <div className="list">
-        <Link to="/">My Chat title</Link>
-        <Link to="/">My Chat title</Link>
-        <Link to="/">My Chat title</Link>
-        <Link to="/">My Chat title</Link>
-        <Link to="/">My Chat title</Link>
-        <Link to="/">My Chat title</Link>
-        <Link to="/">My Chat title</Link>
-        <Link to="/">My Chat title</Link>
-        <Link to="/">My Chat title</Link>
-        <Link to="/">My Chat title</Link>
+        {isPending
+          ? "loading..."
+          : error
+          ? "Something went wrong"
+          : data.map((chat, indx) => (
+              <Link to={`/dashboard/chats/${chat._id}`} key={indx}>
+                {chat.title}
+              </Link>
+            ))}
       </div>
       <hr />
       <div className="upgrade">

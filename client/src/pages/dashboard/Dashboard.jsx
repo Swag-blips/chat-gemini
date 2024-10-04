@@ -11,7 +11,7 @@ const Dashboard = () => {
     if (!text) return;
     console.log(text);
 
-    const res = await fetch("http://localhost:5000/api/chat", {
+    const res = await fetch("http://localhost:5000/api/chats", {
       method: "POST",
       credentials: "include",
       headers: {
