@@ -2,6 +2,7 @@ import express from "express";
 import ImageKit from "imagekit";
 import cors from "cors";
 import dotenv from "dotenv";
+import connectToMongo from "./db/Connect.js";
 
 dotenv.config();
 
@@ -30,4 +31,5 @@ app.use("/api/upload", async (req, res) => {
 });
 app.listen(PORT, () => {
   console.log("server running on port", PORT);
+  connectToMongo();
 });
