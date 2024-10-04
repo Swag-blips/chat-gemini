@@ -4,7 +4,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectToMongo from "./db/Connect.js";
 import chatRoutes from "./routes/chat.route.js";
-import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node";
+import userChatRoutes from "./routes/userChat.route.js";
+
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ const imagekit = new ImageKit({
 });
 app.use(express.json());
 app.use("/api/chat", chatRoutes);
+app.use("/api/userchats", userChatRoutes);
 
 app.use("/api/upload", async (req, res) => {
   try {
