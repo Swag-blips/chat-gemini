@@ -3,6 +3,7 @@ import ImageKit from "imagekit";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectToMongo from "./db/Connect.js";
+import chatRoutes from "./routes/chat.route.js";
 
 dotenv.config();
 
@@ -20,6 +21,9 @@ const imagekit = new ImageKit({
   publicKey: process.env.IMAGE_KIT_PUBLIC_KEY,
   privateKey: process.env.IMAGE_KIT_PRIVATE_KEY,
 });
+app.use(express.json());
+app.use("/api/chat", chatRoutes);
+
 
 app.use("/api/upload", async (req, res) => {
   try {

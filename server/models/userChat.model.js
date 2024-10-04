@@ -28,4 +28,4 @@ const userChatsSchema = new mongoose.Schema(
 );
 
 export default mongoose.models.userchats ||
-  mongoose.model("userchats", userChatsSchema);
+  mongoose.model("UserChats", userChatsSchema);
