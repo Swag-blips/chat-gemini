@@ -13,6 +13,7 @@ const Dashboard = () => {
 
     const res = await fetch("http://localhost:5000/api/chat", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },

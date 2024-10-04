@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectToMongo from "./db/Connect.js";
 import chatRoutes from "./routes/chat.route.js";
+import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node";
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ const app = express();
 app.use(
   cors({
     origin: "http://localhost:5173",
+    credentials: true,
   })
 );
 const imagekit = new ImageKit({
@@ -24,7 +26,6 @@ const imagekit = new ImageKit({
 app.use(express.json());
 app.use("/api/chat", chatRoutes);
 
-
 app.use("/api/upload", async (req, res) => {
   try {
     const result = imagekit.getAuthenticationParameters();
@@ -33,6 +34,12 @@ app.use("/api/upload", async (req, res) => {
     console.log(error);
   }
 });
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(401).send("Unauthenticated!");
+});
+
 app.listen(PORT, () => {
   console.log("server running on port", PORT);
   connectToMongo();

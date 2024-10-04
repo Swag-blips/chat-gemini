@@ -2,7 +2,8 @@ import Chat from "../models/Chat.model.js";
 import UserChats from "../models/UserChat.model.js";
 
 export const createChat = async (req, res) => {
-  const { userId, text } = req.body;
+  const userId = req.auth.userId;
+  const { text } = req.body;
 
   try {
     const newChat = new Chat({

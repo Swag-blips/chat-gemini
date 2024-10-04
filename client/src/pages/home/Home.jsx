@@ -5,6 +5,7 @@ import { TypeAnimation } from "react-type-animation";
 
 const Home = () => {
   const [typingStatus, setTypingStatus] = useState("human1");
+
   return (
     <div className="homepage">
       <img src="/orbital.png" alt="orbital-img" className="orbital" />
