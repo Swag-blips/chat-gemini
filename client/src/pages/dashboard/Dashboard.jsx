@@ -1,24 +1,45 @@
 import React from "react";
 import "./Dashbord.css";
-import { useAuth } from "@clerk/clerk-react";
+
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-  const { userId } = useAuth();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  const mutation = useMutation({
+    mutationFn: async (text) => {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/chats`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to create chat");
+      }
+      console.log(data);
+
+      return data;
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      queryClient.invalidateQueries({ queryKey: ["userChats"] });
+      navigate(`/dashboard/chats/${data.id}`);
+    },
+  });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const text = e.target.text.value;
 
     if (!text) return;
-    console.log(text);
-
-    const res = await fetch("http://localhost:5000/api/chats", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId, text }),
-    });
+    mutation.mutate(text);
   };
   return (
     <div className="dashboardPage">

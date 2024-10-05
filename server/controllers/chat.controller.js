@@ -29,8 +29,9 @@ export const createChat = async (req, res) => {
 
       console.log("new user chats ", newUserChats);
       await newUserChats.save();
+      res.status(201).json({ message: newChat._id });
     } else {
-      const newChat = await UserChats.updateOne(
+      await UserChats.updateOne(
         { userId },
         {
           $push: {
@@ -41,7 +42,7 @@ export const createChat = async (req, res) => {
           },
         }
       );
-      res.status(201).json({ message: newChat._id });
+      res.status(201).json({ id: savedChat._id });
     }
   } catch (error) {
     console.error(`error from createChat Controller ${error.message} `);
@@ -52,7 +53,6 @@ export const createChat = async (req, res) => {
 export const getChat = async (req, res) => {
   const userId = req.auth.userId;
   const _id = req.params.id;
-
 
   try {
     const chat = await Chat.findOne({ _id, userId });

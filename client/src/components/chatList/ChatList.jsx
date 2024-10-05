@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const ChatList = () => {
   const { isPending, error, data } = useQuery({
-    queryKey: ["chatList"],
+    queryKey: ["userChats"],
     queryFn: async () => {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/userchats`,
